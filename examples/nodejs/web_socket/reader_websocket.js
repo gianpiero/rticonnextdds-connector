@@ -49,9 +49,9 @@ connector.on('on_data_available',
        console.log('on_dat');
        input.take();
        console.log(input.samples.getLength());
-       for (i=1; i <= input.samples.getLength(); i++) {
-         if (input.infos.isValid(i)) {  
-           console.log('is valid');     
+       for (i=0; i < input.samples.getLength(); i++) {
+         if (input.infos.isValid(i)) {
+           console.log('is valid');
            var jsonObj = input.samples.getJSON(i);
            console.log(JSON.stringify(jsonObj));
            io.sockets.emit('shape', jsonObj);

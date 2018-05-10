@@ -3,7 +3,7 @@ var rti= require(__dirname + '/../../rticonnextdds-connector')
 var sleep=require('sleep')
 
 // Test Parameterization- describe block will execute once for each param
-var params=["read","take"] 
+var params=["read","take"]
 
 params.forEach(function(retrieval_method) {
 
@@ -17,8 +17,8 @@ params.forEach(function(retrieval_method) {
       connector = new rti.Connector(participant_profile,xml_profile)
       input = connector.getInput("MySubscriber::MySquareReader")
       output = connector.getOutput("MyPublisher::MySquareWriter")
-    })  
-   
+    })
+
     //Clean-up after all tests execute
     after(function() {
       this.timeout(0)
@@ -51,23 +51,23 @@ params.forEach(function(retrieval_method) {
     })
 
     it('data received should be valid',function(){
-      var validity=input.infos.isValid(1)
+      var validity=input.infos.isValid(0)
       expect(validity).to.equal(1)
     })
- 
+
     it('received JSON representation of data should be the same as '+
       'the JSON object sent',function(){
-      var received_JSON=input.samples.getJSON(1)
+      var received_JSON=input.samples.getJSON(0)
       expect(received_JSON).to.deep.equal(JSON.parse(JSON.stringify(testMsg)))
     })
 
     it('received fields of data should be the same as '+
       'that of the JSON object sent',function(){
-      var x = input.samples.getNumber(1,"x")
-      var y = input.samples.getNumber(1,"y")
-      var z = input.samples.getBoolean(1,"z")
-      var color = input.samples.getString(1,"color")
-      var shapesize = input.samples.getNumber(1,"shapesize")
+      var x = input.samples.getNumber(0,"x")
+      var y = input.samples.getNumber(0,"y")
+      var z = input.samples.getBoolean(0,"z")
+      var color = input.samples.getString(0,"color")
+      var shapesize = input.samples.getNumber(0,"shapesize")
 
       expect(x).to.equal(testMsg['x'])
       expect(y).to.equal(testMsg['y'])
@@ -76,7 +76,7 @@ params.forEach(function(retrieval_method) {
       expect(shapesize).to.equal(testMsg['shapesize'])
       expect(color).to.equal(testMsg['color'])
     })
-    
+
     //Unimplemented tests
     it('Behavior of getBoolean on String or Number fields should be considered')
     it('Behavior of getString on Number or Boolean fields should be considered')
